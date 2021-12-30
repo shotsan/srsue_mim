@@ -196,8 +196,8 @@ private:
   std::condition_variable config_cond;
   std::atomic<bool>       is_configured = {false};
 
-  const static int SF_RECV_THREAD_PRIO = 0;
-  const static int WORKERS_THREAD_PRIO = 2;
+  const static int SF_RECV_THREAD_PRIO = 0+98;
+  const static int WORKERS_THREAD_PRIO = 2+98;
 
   srsran::radio_interface_phy* radio = nullptr;
 
