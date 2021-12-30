@@ -43,7 +43,7 @@ extern "C" {
 #endif
 
 // the configured build options for srsRAN
-static char build_info[] = "commit 5275f3336 on branch master";
+static char build_info[] = "commit 9e6a5e789 on branch master";
 
 SRSRAN_API char* srsran_get_build_info() {
   return build_info;
