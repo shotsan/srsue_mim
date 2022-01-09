@@ -574,7 +574,7 @@ void phy_common::worker_end(const worker_context_t& w_ctx, const bool& tx_enable
 
   // Add current time alignment
   srsran::rf_timestamp_t tx_time = w_ctx.tx_time; // get transmit time from the last worker
-  tx_time.sub((double)ta.get_sec());
+  //tx_time.sub((double)ta.get_sec());
 
   // Check if any worker had a transmission
   if (tx_enabled) {

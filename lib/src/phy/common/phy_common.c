@@ -292,6 +292,7 @@ char* srsran_cp_string(srsran_cp_t cp)
 uint32_t srsran_N_ta_new(uint32_t N_ta_old, uint32_t ta)
 {
   ta &= 63;
+  //ta=31;
   int n_ta_new = N_ta_old + ((float)ta - 31) * 16;
   if (n_ta_new < 0) {
     return 0;

@@ -27,7 +27,7 @@
 #include <list>
 #include <string>
 #include <unistd.h>
-
+long unsigned int count=0;
 namespace srsran {
 
 radio::radio()
@@ -403,7 +403,7 @@ bool radio::tx(rf_buffer_interface& buffer, const rf_timestamp_interface& tx_tim
   bool                         ret = true;
   std::unique_lock<std::mutex> lock(tx_mutex);
   uint32_t                     ratio = interpolators[0].ratio;
-
+  
   // Get number of samples at the low rate
   uint32_t nof_samples = buffer.get_nof_samples();
 
@@ -492,7 +492,7 @@ bool radio::tx_dev(const uint32_t& device_idx, rf_buffer_interface& buffer, cons
   if (!is_initialized) {
     return false;
   }
-
+ ++count;
   // Copy timestamp and add Tx time offset calibration
   srsran_timestamp_t tx_time = tx_time_;
   if (!tx_adv_negative) {
@@ -507,7 +507,7 @@ bool radio::tx_dev(const uint32_t& device_idx, rf_buffer_interface& buffer, cons
 
   // Calculates number of overlap samples with previous transmission
   int32_t past_nsamples = (int32_t)round(cur_tx_srate * srsran_timestamp_real(&ts_overlap));
-
+   past_nsamples=0;
   // if past_nsamples is positive, the current transmission overlaps with the previous transmission. If it is negative
   // there is a gap between the previous transmission and the current transmission.
   if (past_nsamples > 0) {
@@ -556,6 +556,7 @@ bool radio::tx_dev(const uint32_t& device_idx, rf_buffer_interface& buffer, cons
         gap_nsamples -= nzeros;
 
         // Increase timestamp
+       
         srsran_timestamp_add(&end_of_burst_time[device_idx], 0, (double)nzeros / cur_tx_srate);
       }
     }
@@ -563,7 +564,10 @@ bool radio::tx_dev(const uint32_t& device_idx, rf_buffer_interface& buffer, cons
 
   // Save possible end of burst time
   srsran_timestamp_copy(&end_of_burst_time[device_idx], &tx_time);
-  srsran_timestamp_add(&end_of_burst_time[device_idx], 0, (double)nof_samples / cur_tx_srate);
+   if (count==1)
+      tx_time.frac_secs= tx_time.frac_secs-.000001;
+       else
+      tx_time.frac_secs= tx_time.frac_secs;
 
   void* radio_buffers[SRSRAN_MAX_CHANNELS] = {};
 
