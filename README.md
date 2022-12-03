@@ -8,3 +8,4 @@ Support
 =======
 All issues in this repo might be because of added change, please contact
 shotsan@pm.me
+![](https://komarev.com/ghpvc/?username=your-github-username)
